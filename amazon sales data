@@ -1,0 +1,35 @@
+import pandas as pd
+
+# Load the dataset
+file_path = r'C:\Users\sidra\Downloads\Amazon Sales data (1).csv'
+sales_data = pd.read_csv(file_path)
+
+# Display the first few rows to understand the structure
+print(sales_data.head())
+# Convert 'Order Date' to datetime format
+sales_data['Order Date'] = pd.to_datetime(sales_data['Order Date'])
+
+# Extract month and year from 'Order Date'
+sales_data['Month'] = sales_data['Order Date'].dt.month
+sales_data['Year'] = sales_data['Order Date'].dt.year
+
+# Calculate yearly-monthly combination for analysis
+sales_data['Year-Month'] = sales_data['Year'].astype(str) + '-' + sales_data['Month'].astype(str).str.zfill(2)
+# Aggregate sales data by month
+monthly_sales = sales_data.groupby('Month')['Sales Amount'].sum()
+
+# Display month-wise sales trends
+print("Month-wise Sales Trends:")
+print(monthly_sales)
+# Aggregate sales data by year
+yearly_sales = sales_data.groupby('Year')['Sales Amount'].sum()
+
+# Display year-wise sales trends
+print("\nYear-wise Sales Trends:")
+print(yearly_sales)
+# Aggregate sales data by year-month
+yearly_monthly_sales = sales_data.groupby('Year-Month')['Sales Amount'].sum()
+
+# Display yearly-monthly sales trends
+print("\nYearly-Monthly Sales Trends:")
+print(yearly_monthly_sales)
